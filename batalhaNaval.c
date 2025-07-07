@@ -1,6 +1,8 @@
 #include <stdio.h>
-int tabuleiro[10][10];
-int a, b;
+int tabuleiro[10][10]; // [coluna][linha]
+int lineA, lineB, lineC, lineD; // Navio 1, 2, 3, 4
+int columnA, columnB, columnC, columnD; // Navio 1, 2, 3, 4
+int columnAI, columnBI, columnCI, columnDI, lineAI, lineBI, lineCI, lineDI; // Váriaveis de entrada dos navios
 
 void initialize(){ // Define todos os índices da matriz do tabuleiro como 0
     for(int i = 0; i < 10; i++){ 
@@ -10,40 +12,78 @@ void initialize(){ // Define todos os índices da matriz do tabuleiro como 0
     }
 }
 
-void defineShips(){ 
-    // Navio 1
-    tabuleiro[1][1] = 3;
-    tabuleiro[2][1] = 3;
-    tabuleiro[3][1] = 3;
-    
-    // Navio 2
-    tabuleiro[3][6] = 3;
-    tabuleiro[3][7] = 3;
-    tabuleiro[3][8] = 3;
-
-
-    /*int lineA;
-    int columnA;
-    printf("Iniciando configuração do seus navios. \n");
-    printf("Digite a coordenada do começo do seu navio. \n");
-    printf("Linha: \n");
-    scanf("%d", &lineA);
-    printf("Coluna: \n");
-    scanf("%d", &columnA);
-
-    printf("Digite a coordenada do fim do seu navio. \n");
-    printf("Linha: \n");
-    scanf("%d", &lineB);
-    printf("Coluna: \n");
-    scanf("%d", &columnB);*/
-}
-
 void resultBoard(){ // Imprime o tabuleiro final
     for(int i = 0; i < 10; i++){ 
         for(int j = 0; j < 10; j++){
             printf("%d ", tabuleiro[i][j]);
         }
         printf("\n");
+    }
+
+}
+
+void defineShips(){ 
+    int usedCoord1, usedCoord2, usedCoord3, usedCoord4;
+    // Navio 1
+    printf("\nDigite a coluna e a linha para o 1º navio (ex: 4 8): ");
+    scanf("%d %d", &columnAI, &lineA);
+    usedCoord1 = (tabuleiro[columnAI][lineA] || tabuleiro[columnAI + 3][lineA + 3] == 3) ? 1 : 0;
+
+    if(usedCoord1 == 0){
+        for(columnA = columnAI; columnA < columnAI + 3; columnA++){
+                tabuleiro[columnA][lineA] = 3;
+            }
+        resultBoard();
+        }
+    else if(usedCoord1 == 1){
+        printf("Há um navio nas coordenadas escolhidas.");
+    }
+
+    // Navio 2
+    printf("\nDigite a coluna e a linha para o 2º navio, respectivamente (ex: 4 8): ");
+    scanf("%d %d", &columnB, &lineBI);
+    usedCoord2 = (tabuleiro[columnB][lineBI] || tabuleiro[columnB + 3][lineBI + 3] == 3) ? 1 : 0;
+
+    if(usedCoord2 == 0){
+        for(lineB = lineBI; lineB < lineBI + 3; lineB++){
+                tabuleiro[columnB][lineB] = 3;
+            }
+        resultBoard();
+        }
+    else if(usedCoord2 == 1){
+        printf("Há um navio nas coordenadas escolhidas.");
+    }
+
+    // Navio 3
+    printf("\nDigite a coluna e a linha para o 3º navio, respectivamente (ex: 4 8): ");
+    scanf("%d %d", &columnCI, &lineCI);
+    usedCoord3 = (tabuleiro[columnCI][lineCI] || tabuleiro[columnCI + 3][lineCI + 3] == 3) ? 1 : 0;
+
+    if(usedCoord3 == 0){
+        for(columnC = columnCI; columnC < columnCI + 3; columnC++, lineCI++){
+            tabuleiro[columnC][lineCI] = 3;
+        }
+        resultBoard();
+        }
+
+    else if(usedCoord3 == 1){
+        printf("Há um navio nas coordenadas escolhidas.");
+    }
+
+    // Navio 4
+    printf("\nDigite a coluna e a linha para o 4º navio, respectivamente (ex: 4 8): ");
+    scanf("%d %d", &columnDI, &lineDI);
+    usedCoord4 = (tabuleiro[columnDI][lineDI] || tabuleiro[columnDI + 3][lineDI + 3] == 3) ? 1 : 0;
+
+    if(usedCoord4 == 0){
+        for(columnD = columnDI; columnD < columnDI + 3; columnD++, lineDI--){
+            tabuleiro[columnD][lineDI] = 3;
+        }
+        resultBoard();
+        }
+
+    else if(usedCoord4 == 1){
+        printf("Há um navio nas coordenadas escolhidas.");
     }
 
 }
@@ -58,11 +98,10 @@ int main(){
     printf("3. Ver tabuleiro.\n");
     printf("Escolha uma das opções: ");
     scanf("%d", &opcao);
-    defineShips();
 
     switch(opcao){
     case 1:
-        printf("Sei lá ainda não tem regra.\n");
+        printf("\nVence quem derrotar todos os navios do inimigo.\n");
         break;
     case 2:
         defineShips();
@@ -71,7 +110,7 @@ int main(){
         resultBoard();
         break;
     default:
-        printf("A opção escolhida não existe.");
+        printf("\nA opção escolhida não existe.");
         break;
     }
 }
